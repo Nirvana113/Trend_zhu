@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
+from app.api.v1 import stock
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -18,6 +19,9 @@ if settings.BACKEND_CORS_ORIGINS:
         allow_methods=["*"],
         allow_headers=["*"],
     )
+
+# Include API routers
+app.include_router(stock.router, prefix=settings.API_V1_STR + "/stock", tags=["stock"])
 
 @app.get("/")
 async def root():
